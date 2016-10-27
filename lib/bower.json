@@ -1,0 +1,21 @@
+{
+  "name": "weatherapp",
+  "description": "weather app for NSS",
+  "main": "index.js",
+  "authors": [
+    "Zoe LeBlanc <zgleblanc@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "weather",
+    "nss"
+  ],
+  "homepage": "https://github.com/ZoeLeBlanc/weather-app",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
