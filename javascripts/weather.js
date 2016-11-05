@@ -1,23 +1,20 @@
 "use strict";
 
 var Weather = ( ()=> {
-let appidKey = {};
-let APPID;
+
 	return {
 		weatherCredentials: ()=>{
 			return new Promise( (resolve, reject)=> {
 				$.ajax({
-					url: 'apiKeys.json',
-					method: 'GET'
-				}).then((response)=> {
+					method: 'GET',
+					url: `../apiKeys.json`
+				}).then( (response)=> {
 					console.log("response", response);
-					appidKey = response;
-					APPID = appidKey.APPID;
-					resole(response);
+					resolve(response);
 				}, (error)=>{
 					reject(error);
 				});
-			})
+			});
 		}
 	};
 })();

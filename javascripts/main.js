@@ -1,67 +1,17 @@
 "use strict";
-// const weater = ('./weather');
-let appid; 
+let appidKey = {};
+let APPID; 
 let cityID;
 let zipcodeID;
 let degreeID;
+let tempDegree;
 
-//Weather JSON
-let loadCurrentWeather = (zipCode) => {
-	return new Promise ((resolve, reject) => {
-		$.ajax({
-			url: 'apiKeys.json',
-			method: 'GET'
-		}).then((response)=> {
-			console.log("response", response);
-			appidKey = response;
-			let APPID = appidKey.APPID;
-			$.ajax({
-				method: 'GET',
-				url: `http://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&APPID=${APPID}`
-			}).then((response2) => {
-				console.log("response2", response2);
-				// cityID = response2.id;
-				resolve(response2);
-			}, (errorResponse2)=> {
-				console.log("weather app fail", errorResponse2);
-			});
-		}, (errorResponse) => {
-		console.log("weather app fail", errorResponse);
-		reject(errorResponse);
-		});
-	});
-};
-
-let forecastDayWeather = (cityId, numbDay) => {
-	return new Promise ((resolve, reject) => {
-		$.ajax({
-			url: 'apiKeys.json',
-			method: 'GET'
-		}).then((response)=> {
-			console.log("response", response);
-			appidKey = response;
-			let APPID = appidKey.APPID;
-			$.ajax({
-				method: 'GET',
-				url: `http://api.openweathermap.org/data/2.5/forecast/daily?id=${cityId}&cnt=${numbDay}&APPID=${APPID}`
-			}).then((response2) => {
-				console.log("response2", response2);
-				resolve(response2);
-			}, (errorResponse2)=> {
-				console.log("weather app forecast fail", errorResponse2);
-			});
-		}, (errorResponse) => {
-		console.log("weather app forecast fail", errorResponse);
-		reject(errorResponse);
-		});
-	});
-};
 //Initial View of Current Weather
 let checkZip = (userZip) => {
 	zipcodeID = "";
 	degreeID = "";
 	cityID = "";
-	let tempDegree;
+	tempDegree = "";
 	if(userZip === "" || !$.isNumeric(userZip) || userZip.length != 5){
 		alert("Please enter a correct zipcode");
 		$("#weather-input").focus();
@@ -69,12 +19,12 @@ let checkZip = (userZip) => {
 		$("#weather-input").val("");
 		if ($("#celsius").is(':checked')){
 			console.log("hi");
-				tempDegree = "celsius";
+				tempDegree = "metric";
 				loadWeather(userZip, tempDegree);
 				zipcodeID = userZip;
 				degreeID = tempDegree;
 			} else {
-				tempDegree = "fahrenheit";
+				tempDegree = "imperial";
 				loadWeather(userZip, tempDegree);
 				zipcodeID = userZip;
 				degreeID = tempDegree;
@@ -85,81 +35,120 @@ let checkZip = (userZip) => {
 
 let loadWeather = (correctZip, degreeType)=>{
 	//Load Current Weather
-	loadCurrentWeather(correctZip).then( (weatherData) => {
+	Weather.loadCurrentWeather(APPID, correctZip).then( (weatherData) => {
 		console.log("weatherData", weatherData);
 		cityID = weatherData.id;
-		$('#currentWeather').html("");
-		$('#currentWeather').append(`<h1>Current Weather in ${weatherData.name}</h1>`);
-		//calculate type of temp selected
-		let temp = weatherData.main.temp;
-		if (degreeType === "celsius"){
-				console.log("temp", temp);
-				let finalTemp = temp - 273.15;
-				console.log("finalTemp", finalTemp);
-				$('#currentWeather').append(`<div>${finalTemp.toFixed(0)}</div>`);
-
-		} else {
-				let finalTemp = ((temp - 273.15)*9/5)+32;
-				$('#currentWeather').append(`<div>${finalTemp.toFixed(0)}</div>`);
-		}
-		//Print temp features to DOM
-		$('#currentWeather').append(`<div>${weatherData.main.humidity}</div>`);
-		$('#currentWeather').append(`<div>${weatherData.main.pressure}</div>`);
-		$.each(weatherData.weather, (index, weather)=>{
-			$('#currentWeather').append(`<div>${weather.description}</div>`);	
-		});
+		let day = 1;
+		loadForecast(cityID, degreeType, day);
 	}).catch( (error)=>{
 		console.log("error", error);
 	});
 };
 
 let loadForecast = (cityNum, degreeType, daysOfWeek)=>{
-	//Load Current Weather
-	forecastDayWeather(cityNum, daysOfWeek).then( (weatherData) => {
+	let DOMarea = $("#weatherArea");
+	//Load Forecast Weather
+	Weather.forecastDayWeather(APPID, cityNum, degreeType, daysOfWeek).then( (weatherData) => {
 		console.log("weatherData", weatherData);
-		$('#currentWeather').html("");
-		$('#currentWeather').append(`<h1>Current Weather in ${weatherData.name}</h1>`);
-		//calculate type of temp selected
-		let temp = weatherData.main.temp;
-		if (degreeType === "celsius"){
-				console.log("temp", temp);
-				let finalTemp = temp - 273.15;
-				console.log("finalTemp", finalTemp);
-				$('#currentWeather').append(`<div>${finalTemp.toFixed(0)}</div>`);
-
-		} else {
-				let finalTemp = ((temp - 273.15)*9/5)+32;
-				$('#currentWeather').append(`<div>${finalTemp.toFixed(0)}</div>`);
-		}
-		//Print temp features to DOM
-		$('#currentWeather').append(`<div>${weatherData.main.humidity}</div>`);
-		$('#currentWeather').append(`<div>${weatherData.main.pressure}</div>`);
-		$.each(weatherData.weather, (index, weather)=>{
-			$('#currentWeather').append(`<div>${weather.description}</div>`);	
+		//Check how many days of week requested
+		// if (daysOfWeek === 3){
+		// 	DOMarea = $("#threeDayWeather");
+		// } else if (daysOfWeek === 7){
+		// 	DOMarea = $("#sevenDayWeather");
+		// } else {
+		// 	DOMarea = $("#currentWeather");
+		// }
+		DOMarea.html("");
+		let weatherOutput = "";
+		DOMarea.append(`<h1>Forecast for ${weatherData.city.name}</h1>`);
+		$.each(weatherData.list, (index, weather)=>{
+			if (index % 3 === 0){
+				weatherOutput += `<div class="row">`;
+			}
+				weatherOutput += `<div class="col-md-4">`;
+				weatherOutput += `<div class="card" id="${index}>"`;
+					weatherOutput += `<div class="card-block" id="dayTime">`;
+						weatherOutput += `<h4> Day Temperature: ${weather.temp.day}</h4>`;
+					weatherOutput += `</div>`;
+					weatherOutput += `<div class="card-block" id="nightTime">`;
+						weatherOutput += `<h4> Night Temperature: ${weather.temp.night}</h4>`;
+					weatherOutput += `</div>`;
+					weatherOutput += `<li class="list-group-item">Humidity: ${weather.humidity}</li>`;
+					weatherOutput += `<li class="list-group-item">Pressure: ${weather.pressure}</li>`;	
+			let description = weather.weather;
+			$.each(description, (index, desc)=>{
+				weatherOutput += `<div class="card-block" id="description">`;
+				weatherOutput += `<p>${desc.description}</p>`;
+				weatherOutput += `</div>`;
+				console.log("description", desc.description);
+			});
+			weatherOutput += `</div>`;
+			weatherOutput += `</div>`;
+			if ((index-2)%3 === 0){
+				weatherOutput += `</div>`;
+			}
 		});
+		DOMarea.append(weatherOutput);
 	}).catch( (error)=>{
 		console.log("error", error);
 	});
 };
 //DOM Functions
 $(document).ready(function(){
+	Weather.weatherCredentials().then( (response)=>{
+		appidKey = response;
+		APPID = appidKey.APPID;
+	});
 	
 	//get zipcode
 	$('#weather-input').keypress( (event)=>{
 		if (event.which == 13){
-			let enteredZip = $('#weather-input').val();
-			checkZip(enteredZip);
+			if (!$("input[name='degree']:checked").val("")) {
+   				alert('Pick degree!');
+			}
+			else {
+ 				degreeID = $("input[name='degree']:checked").val();
+ 				let enteredZip = $('#weather-input').val();
+				checkZip(enteredZip, degreeID);
+			}
+			
 		} 
 	});
 	//get current weather
 	$('#getWeather-button').on("click", (event)=>{
-		let enteredZip = $('#weather-input').val();
-		console.log("enteredZip", enteredZip.length);
-			checkZip(enteredZip);
+		if (!$("input:checked").val()) {
+   				alert('Pick degree!');
+			}
+			else {
+ 				degreeID = $("input:checked").val();
+ 				console.log("degreeID", degreeID);
+ 				let enteredZip = $('#weather-input').val();
+				checkZip(enteredZip, degreeID);
+			}
 	});
-	//get 
-	$(".nav").on("click", (event)=>{
-		console.log("link click", event);
+	//get nav clicks
+	$("#weather--curent").on("click", function(event){
+		console.log("current");
+		let day = 1;
+		loadForecast(cityID, tempDegree, day);
+		// if ($("#weather--curent").hasClass("hide")){
+			
+			$("#weather--curent").removeClass("hide");
+			$("#weather--curent").addClass("show");
+			console.log("hide");
+		// }
+		
+	});
+	$("#weather--three").on("click", function(event){
+		console.log("three", tempDegree);
+		let day = 3;
+		loadForecast(cityID, tempDegree, day);
+	});	
+	$("#weather--seven").on("click", function(event){
+		console.log("seven", tempDegree);
+		let day = 7;
+
+		loadForecast(cityID, tempDegree, day);
 	});
 });
 

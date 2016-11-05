@@ -9,40 +9,46 @@
   <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 <body>
+<!-- Initial Input -->
 <h1>Weather App</h1>
 	<div class="panel panel-default col-md-6 col-md-offset-3">
 		<div class="panel-body">
 			<input class="form-control " type="text" id="weather-input" value="" placeholder="Type in a valid zipcode">
 			<button type="button" class="btn btn-primary btn-md" id="getWeather-button" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Wait for it... ">Find out the Weather</button>
-			<input type="radio" name="degree" id="celsius" placeholder=""> Celsius
-			<input type="radio" name="degree" id="fahrenheit" placeholder=""> Fahrenheit
+			<input type="radio" name="degree" id="celsius" value="celsius" placeholder=""> Celsius
+			<input type="radio" name="degree" id="fahrenheit" value="fahrenheit" placeholder=""> Fahrenheit
 		</div>	
 	</div>
+  <!-- Weather Links -->
 <div id="weatherContainer" class="col-md-6 col-md-offset-3">
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link active" href="#" next="card-three">Current Weather</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#" next="card--seven" prev="card--curent">3 Day Weather</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#" prev="card--three">7 Day Weather</a>
-  </li>
-</ul>
-<section id="currentWeather" class="card card--current">
+  <ul class="nav nav-tabs">
+    <li class="nav-item" >
+      <a class="nav-link active" href="#" id="weather--current">Current Weather</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" id="weather--three">3 Day Weather</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" id="weather--seven">7 Day Weather</a>
+    </li>
+  </ul>
+  <!-- Output Weather -->
+  <div id="weatherArea" class="card">
+<!--     <section id="currentWeather" class="card">
 
-</section>
-<section id="threeDayWeather" class="card card--three">
+    </section>
+    <section id="threeDayWeather" class="card">
 
-</section>
-<section id="sevenDayWeather" class="card card--seven">
+    </section>
+    <section id="sevenDayWeather" class="card">
 
-</section>
+    </section> -->
+  </div>
 </div>	
 <script src="/lib/bower_components/jquery/dist/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<!--  <script src="/javascripts/weather.js"></script> -->
+ <script src="/javascripts/weather.js"></script>
+ <script src="/javascripts/getForecast.js"></script>
  <script src="/javascripts/main.js"></script>
 </body>
 </html>
