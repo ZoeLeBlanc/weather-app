@@ -4,50 +4,98 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Weather App</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
   <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+   <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.1.1/css/mdb.min.css"> -->
   <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 <body>
-<!-- Initial Input -->
-<h1>Weather App</h1>
-	<div class="panel panel-default col-md-6 col-md-offset-3">
-		<div class="panel-body">
-			<input class="form-control " type="text" id="weather-input" value="" placeholder="Type in a valid zipcode">
-			<button type="button" class="btn btn-primary btn-md" id="getWeather-button" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Wait for it... ">Find out the Weather</button>
-			<input type="radio" name="degree" id="celsius" value="celsius" placeholder=""> Celsius
-			<input type="radio" name="degree" id="fahrenheit" value="fahrenheit" placeholder=""> Fahrenheit
-		</div>	
-	</div>
-  <!-- Weather Links -->
-<div id="weatherContainer" class="col-md-6 col-md-offset-3">
-  <ul class="nav nav-tabs">
-    <li class="nav-item" >
-      <a class="nav-link active" href="#" id="weather--current">Current Weather</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#" id="weather--three">3 Day Weather</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#" id="weather--seven">7 Day Weather</a>
-    </li>
-  </ul>
-  <!-- Output Weather -->
-  <div id="weatherArea" class="card">
-<!--     <section id="currentWeather" class="card">
-
-    </section>
-    <section id="threeDayWeather" class="card">
-
-    </section>
-    <section id="sevenDayWeather" class="card">
-
-    </section> -->
+<div class="container-fluid">
+<!-- Registration form -->
+  <div class="row">
+    <div class="card col s8 offset-s2" id="login-container">
+          <h1 class="col s10 offset-s2">Weather App</h1>
+          <input type="email" id="inputEmail" class="input-field col s8 offset-s2" placeholder="Email address" required autofocus>
+          <input type="password" id="inputPassword" class="input-field col s8 s8 offset-s2" placeholder="Password" required>
+          <input type="text" id="inputUsername" class="input-field col s8 offset-s2" placeholder="Username" required>
+          <button class="btn waves-effect waves-light col s4 offset-s2" id="loginButton">Login</button>
+          <button class="btn waves-effect waves-light col s4" id="registerButton">Register</button>
+      </div>
   </div>
-</div>	
+<!-- App HTML
+ -->   
+<!-- Initial Input -->
+  <div id="weather-container" class="hide">
+      <div class="row">
+        <div id="header" class="col s6 offset-s1">
+          <h1>Weather App</h1>
+        </div>
+        <div id="logout-container" class="col s5">
+          
+        </div>
+      </div>
+      <div class="row">
+      	<div class="card col s5 offset-s1">
+          <div class="row">
+              <div class="input-field col s10 offset-s1">
+          			<input type="text" id="weather-input" value="" placeholder="Type in a valid zipcode">
+               </div>
+          </div>
+          <div class="row">
+             <div class="col s5 offset-s1">
+                <input type="radio" name="degree" id="celsius" value="celsius" placeholder=""><label for="celsius">Celsius</label>
+                <input type="radio" name="degree" id="fahrenheit" value="fahrenheit" placeholder=""><label for="fahrenheit">Fahrenheit</label>
+              </div>
+          </div>
+          <div class="row">
+        			<button type="button" class="btn waves-effect waves-light col s5 offset-s1" id="getWeather-button">Find out the Weather</button>
+              <button type="button" class="btn waves-effect waves-light col s4 offset-s1" id="saveSearch-button">Save Search</button>
+          </div>
+        </div>
+        <div id="userSearches" class="card col s4">
+          
+        </div>
+      </div>
+      <!-- Weather Links -->
+      <div id="weatherTabs" class="row">
+        <div class="row col s10 offset-s2">
+          <ul class="tabs">
+            <li class="tab col s3">
+              <a class="nav-link active" href="#" id="weather--current">Current Weather</a>
+            </li>
+            <li class="tab col s3">
+              <a class="nav-link" href="#" id="weather--three">3 Day Weather</a>
+            </li>
+            <li class="tab col s3">
+              <a class="nav-link" href="#" id="weather--seven">7 Day Weather</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Output Weather -->
+      <div id="weatherArea" class="row">
+       <!--  <section id="currentWeather" class="card">
+
+        </section>
+        <section id="threeDayWeather" class="card">
+
+        </section>
+        <section id="sevenDayWeather" class="card"> -->
+
+        </section>
+      </div>
+  </div> <!-- weather container -->
+</div> <!-- container  -->
+<script src="https://www.gstatic.com/firebasejs/3.5.2/firebase.js"></script>
 <script src="/lib/bower_components/jquery/dist/jquery.min.js"></script>
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.1.1/js/mdb.min.js"></script> -->
  <script src="/javascripts/weather.js"></script>
+ <script src="/javascripts/firebaseAuth.js"></script>
+ <script src="/javascripts/firebaseUser.js"></script>
+ <script src="/javascripts/firebaseMethods.js"></script>
  <script src="/javascripts/getForecast.js"></script>
  <script src="/javascripts/main.js"></script>
 </body>

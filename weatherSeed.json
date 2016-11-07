@@ -1,0 +1,34 @@
+{
+	"searches": {
+		"search0":{
+			"zipcode": "37205",
+			"degree": "celsius",
+			"uid": "REver3chJ3ULoYUMq1hyzazDy6N2"
+		},
+		"search1":{
+			"zipcode": "10001",
+			"degree": "celsius",
+			"uid": "REver3chJ3ULoYUMq1hyzazDy6N2"	
+		},
+		"search2":{
+			"zipcode": "94101",
+			"degree": "fahrenheit",
+			"uid": "JOddJJaSjVgO04Sa6DUXlscX0Tr2"
+		},
+		"search3":{
+			"zipcode": "37209",
+			"degree": "fahrenheit",
+			"uid": "JOddJJaSjVgO04Sa6DUXlscX0Tr2"
+		}
+	},
+	"users": {
+		"user1":{
+			"username": "Zoe",
+			"uid": "REver3chJ3ULoYUMq1hyzazDy6N2"
+		},
+		"user2":{
+			"username": "Camille",
+			"uid": "JOddJJaSjVgO04Sa6DUXlscX0Tr2"
+		}
+	}
+}

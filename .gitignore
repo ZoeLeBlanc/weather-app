@@ -2,4 +2,5 @@
 
 lib/node_modules
 lib/bower_components
-apiKeys.json
+apiKeysWeather.json
+apiKeysFirebase.json
